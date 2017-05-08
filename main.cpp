@@ -1,4 +1,4 @@
-// Win32Project1.cpp : Defines the entry point for the application.
+п»ї// Win32Project1.cpp : Defines the entry point for the application.
 //
 #include "stdafx.h"
 
@@ -14,7 +14,7 @@ RECT initial_rect;
 bool initial_rect_set = false;
 constexpr long kStickySize = 10;
 const double scale = 0.75;
-}
+} // namespace
 
 // Global Variables:
 HINSTANCE hInst;                     // current instance
@@ -170,55 +170,55 @@ bool ProcessResize(HWND hwnd, WPARAM wParam, RECT *rect) {
   switch (wParam) {
   case WMSZ_RIGHT:
   case WMSZ_LEFT: {
-    // Ширина не может превышать размеров экрана.
+    // РЁРёСЂРёРЅР° РЅРµ РјРѕР¶РµС‚ РїСЂРµРІС‹С€Р°С‚СЊ СЂР°Р·РјРµСЂРѕРІ СЌРєСЂР°РЅР°.
     const long new_width = std::min<long>(user_width, max_window_width);
-    // Пересчитываем по известной ширине высоту.
+    // РџРµСЂРµСЃС‡РёС‚С‹РІР°РµРј РїРѕ РёР·РІРµСЃС‚РЅРѕР№ С€РёСЂРёРЅРµ РІС‹СЃРѕС‚Сѓ.
     const long new_height =
         std::min<long>(new_width * scale, max_window_height);
 
-    // Задаем вертикальное положение окна.
+    // Р—Р°РґР°РµРј РІРµСЂС‚РёРєР°Р»СЊРЅРѕРµ РїРѕР»РѕР¶РµРЅРёРµ РѕРєРЅР°.
     rect->top = initial_rect.top;
     rect->bottom = rect->top + new_height;
     if (rect->bottom > monitor_rect.bottom) {
-      // Если оказалось что нижняя граница ушла ниже границы экрана - смещаем
-      // окно вверх.
+      // Р•СЃР»Рё РѕРєР°Р·Р°Р»РѕСЃСЊ С‡С‚Рѕ РЅРёР¶РЅСЏСЏ РіСЂР°РЅРёС†Р° СѓС€Р»Р° РЅРёР¶Рµ РіСЂР°РЅРёС†С‹ СЌРєСЂР°РЅР° - СЃРјРµС‰Р°РµРј
+      // РѕРєРЅРѕ РІРІРµСЂС….
       rect->bottom = monitor_rect.bottom;
       rect->top = rect->bottom - new_height;
     }
 
     if (wParam == WMSZ_RIGHT) {
-      // Если пользователь держится за правую грань - двигаем правую.
+      // Р•СЃР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РґРµСЂР¶РёС‚СЃСЏ Р·Р° РїСЂР°РІСѓСЋ РіСЂР°РЅСЊ - РґРІРёРіР°РµРј РїСЂР°РІСѓСЋ.
       rect->right = rect->left + new_width;
     } else {
-      // Если пользователь держится за левую грань - двигаем левую.
+      // Р•СЃР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РґРµСЂР¶РёС‚СЃСЏ Р·Р° Р»РµРІСѓСЋ РіСЂР°РЅСЊ - РґРІРёРіР°РµРј Р»РµРІСѓСЋ.
       rect->left = rect->right - new_width;
     }
   } break;
 
   case WMSZ_BOTTOM:
   case WMSZ_TOP: {
-    // Высота не может превышать размеров экрана.
+    // Р’С‹СЃРѕС‚Р° РЅРµ РјРѕР¶РµС‚ РїСЂРµРІС‹С€Р°С‚СЊ СЂР°Р·РјРµСЂРѕРІ СЌРєСЂР°РЅР°.
     const long new_height = std::min<long>(user_height, max_window_height);
-    // Пересчитываем по известной высоте ширину.
+    // РџРµСЂРµСЃС‡РёС‚С‹РІР°РµРј РїРѕ РёР·РІРµСЃС‚РЅРѕР№ РІС‹СЃРѕС‚Рµ С€РёСЂРёРЅСѓ.
     const long new_width = std::min<long>(new_height / scale, max_window_width);
 
-    // Возвращаем окно в первоначальное положение, а потом задаем новые размеры
-    // и смещаем чтобы не вылезать за пределы экрана.
+    // Р’РѕР·РІСЂР°С‰Р°РµРј РѕРєРЅРѕ РІ РїРµСЂРІРѕРЅР°С‡Р°Р»СЊРЅРѕРµ РїРѕР»РѕР¶РµРЅРёРµ, Р° РїРѕС‚РѕРј Р·Р°РґР°РµРј РЅРѕРІС‹Рµ СЂР°Р·РјРµСЂС‹
+    // Рё СЃРјРµС‰Р°РµРј С‡С‚РѕР±С‹ РЅРµ РІС‹Р»РµР·Р°С‚СЊ Р·Р° РїСЂРµРґРµР»С‹ СЌРєСЂР°РЅР°.
     *rect = initial_rect;
 
-    // В зависмости от грани, за которую держится пользователь двигаем верх или
-    // низ окна.
+    // Р’ Р·Р°РІРёСЃРјРѕСЃС‚Рё РѕС‚ РіСЂР°РЅРё, Р·Р° РєРѕС‚РѕСЂСѓСЋ РґРµСЂР¶РёС‚СЃСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РґРІРёРіР°РµРј РІРµСЂС… РёР»Рё
+    // РЅРёР· РѕРєРЅР°.
     if (wParam == WMSZ_BOTTOM)
       rect->bottom = rect->top + new_height;
     else
       rect->top = rect->bottom - new_height;
 
-    // Ширину изменям за счет левой и правой границы симметрично.
+    // РЁРёСЂРёРЅСѓ РёР·РјРµРЅСЏРј Р·Р° СЃС‡РµС‚ Р»РµРІРѕР№ Рё РїСЂР°РІРѕР№ РіСЂР°РЅРёС†С‹ СЃРёРјРјРµС‚СЂРёС‡РЅРѕ.
     const long rect_center_x = (rect->right + rect->left) / 2;
     rect->left = rect_center_x - new_width / 2;
     rect->right = rect->left + new_width;
 
-    // Не даем вылезти за границы окна.
+    // РќРµ РґР°РµРј РІС‹Р»РµР·С‚Рё Р·Р° РіСЂР°РЅРёС†С‹ РѕРєРЅР°.
     if (rect->left < monitor_rect.left) {
       rect->left = monitor_rect.left;
       rect->right = rect->left + new_width;
@@ -232,18 +232,18 @@ bool ProcessResize(HWND hwnd, WPARAM wParam, RECT *rect) {
   case WMSZ_BOTTOMLEFT:
   case WMSZ_TOPRIGHT:
   case WMSZ_TOPLEFT: {
-    // Считаем какие размеры получаются если курсор лежит на вертикальной
-    // границе.
+    // РЎС‡РёС‚Р°РµРј РєР°РєРёРµ СЂР°Р·РјРµСЂС‹ РїРѕР»СѓС‡Р°СЋС‚СЃСЏ РµСЃР»Рё РєСѓСЂСЃРѕСЂ Р»РµР¶РёС‚ РЅР° РІРµСЂС‚РёРєР°Р»СЊРЅРѕР№
+    // РіСЂР°РЅРёС†Рµ.
     const long new_width_from_user_width =
         std::min<long>(user_width, max_window_width);
     const long new_height_from_user_width =
         std::min<long>(new_width_from_user_width * scale, max_window_height);
-    // Считаем какие размеры получаются если курсор лежит на нижней границе.
+    // РЎС‡РёС‚Р°РµРј РєР°РєРёРµ СЂР°Р·РјРµСЂС‹ РїРѕР»СѓС‡Р°СЋС‚СЃСЏ РµСЃР»Рё РєСѓСЂСЃРѕСЂ Р»РµР¶РёС‚ РЅР° РЅРёР¶РЅРµР№ РіСЂР°РЅРёС†Рµ.
     const long new_height_from_user_heigth =
         std::min<long>(user_height, max_window_height);
     const long new_width_from_user_heigth =
         std::min<long>(new_height_from_user_heigth / scale, max_window_width);
-    // Какой прямоугольник больше - там и лежит курсор. Его и берем.
+    // РљР°РєРѕР№ РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРє Р±РѕР»СЊС€Рµ - С‚Р°Рј Рё Р»РµР¶РёС‚ РєСѓСЂСЃРѕСЂ. Р•РіРѕ Рё Р±РµСЂРµРј.
     const bool on_vert_edge =
         new_width_from_user_width > new_width_from_user_heigth;
     const long new_user_width =
@@ -257,27 +257,27 @@ bool ProcessResize(HWND hwnd, WPARAM wParam, RECT *rect) {
         (wParam == WMSZ_TOPRIGHT) || (wParam == WMSZ_TOPLEFT);
     long max_width = 0;
     if (left_resize) {
-      // Обрезаем прямоугольник чтобы он вмещался в экран. По левому краю.
+      // РћР±СЂРµР·Р°РµРј РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРє С‡С‚РѕР±С‹ РѕРЅ РІРјРµС‰Р°Р»СЃСЏ РІ СЌРєСЂР°РЅ. РџРѕ Р»РµРІРѕРјСѓ РєСЂР°СЋ.
       max_width = std::min<long>(initial_rect.right - monitor_rect.left,
                                  new_user_width);
     } else {
-      // Обрезаем прямоугольник чтобы он вмещался в экран. По правому краю.
+      // РћР±СЂРµР·Р°РµРј РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРє С‡С‚РѕР±С‹ РѕРЅ РІРјРµС‰Р°Р»СЃСЏ РІ СЌРєСЂР°РЅ. РџРѕ РїСЂР°РІРѕРјСѓ РєСЂР°СЋ.
       max_width = std::min<long>(monitor_rect.right - initial_rect.left,
                                  new_user_width);
     }
     long max_height = max_width * scale;
     if (top_resize) {
-      // По верхнему краю.
+      // РџРѕ РІРµСЂС…РЅРµРјСѓ РєСЂР°СЋ.
       max_height =
           std::min<long>(initial_rect.bottom - monitor_rect.top, max_height);
     } else {
-      // По нижнему краю.
+      // РџРѕ РЅРёР¶РЅРµРјСѓ РєСЂР°СЋ.
       max_height =
           std::min<long>(monitor_rect.bottom - initial_rect.top, max_height);
     }
     max_width = max_height / scale;
 
-    // Готово. Задаем положение окна.
+    // Р“РѕС‚РѕРІРѕ. Р—Р°РґР°РµРј РїРѕР»РѕР¶РµРЅРёРµ РѕРєРЅР°.
     rect->top =
         (top_resize) ? initial_rect.bottom - max_height : initial_rect.top;
     rect->left =
